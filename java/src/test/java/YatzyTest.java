@@ -1,9 +1,27 @@
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.lang.reflect.Method;
+import javax.validation.Validation;
+import javax.validation.ValidatorFactory;
+import javax.validation.executable.ExecutableValidator;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 public class YatzyTest {
+
+    private static ExecutableValidator validator;
+
+
+    @BeforeAll
+    private static void initValidatorFactory() {
+        ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+        validator = factory.getValidator().forExecutables();
+    }
 
     @Test
     public void chance_scores_sum_of_all_dice() {
@@ -21,46 +39,50 @@ public class YatzyTest {
         assertEquals(0, Yatzy.yatzy(6,6,6,6,3));
     }
 
-    @Test public void test_1s() {
-        assertTrue(Yatzy.ones(1,2,3,4,5) == 1);
-        assertEquals(2, Yatzy.ones(1,2,1,4,5));
-        assertEquals(0, Yatzy.ones(6,2,2,4,5));
-        assertEquals(4, Yatzy.ones(1,2,1,1,1));
+    @ParameterizedTest
+    @DisplayName("sum of the dice that reads ")
+    @ValueSource(ints = {1, 2, 3, 4, 5, 6})
+    public void sumOfTheDiceThatReads(int value) {
+        for(int count=0; count<=5; count++) {
+            Yatzy yatzy = getYatzy(value, count);
+            assertEquals(value * count, yatzy.sumOfTheDiceThatReads(value));
+        }
     }
 
     @Test
-    public void test_2s() {
-        assertEquals(4, Yatzy.twos(1,2,3,2,6));
-        assertEquals(10, Yatzy.twos(2,2,2,2,2));
+    @DisplayName("sumOfTheDiceThatReads accepts a value between 1 and 6")
+    public void sumOfTheDiceThatReads£_accepted_values() throws NoSuchMethodException {
+        Yatzy yatzy = new Yatzy(1, 2, 3, 4, 5);
+        Method method = Yatzy.class.getMethod("sumOfTheDiceThatReads", int.class);
+        assertFalse(validator.validateParameters(yatzy, method, new Object[]{ 0 }).isEmpty());
+        assertTrue(validator.validateParameters(yatzy, method, new Object[]{ 1 }).isEmpty());
+        assertTrue(validator.validateParameters(yatzy, method, new Object[]{ 2 }).isEmpty());
+        assertTrue(validator.validateParameters(yatzy, method, new Object[]{ 3 }).isEmpty());
+        assertTrue(validator.validateParameters(yatzy, method, new Object[]{ 4 }).isEmpty());
+        assertTrue(validator.validateParameters(yatzy, method, new Object[]{ 5 }).isEmpty());
+        assertTrue(validator.validateParameters(yatzy, method, new Object[]{ 6 }).isEmpty());
+        assertFalse(validator.validateParameters(yatzy, method, new Object[]{ 7 }).isEmpty());
     }
 
-    @Test
-    public void test_threes() {
-        assertEquals(6, Yatzy.threes(1,2,3,2,3));
-        assertEquals(12, Yatzy.threes(2,3,3,3,3));
+    /**
+     * A roll with a fixed number of dice that reads a specific value
+     *
+     * @param value
+     * @param count number of dice that reads the value
+     * @return
+     */
+    private Yatzy getYatzy(int value, int count) {
+        int[] dice = new int[5];
+        for(int i=1; i<=5; i++) {
+            if(i<=count) {
+                dice[i-1] = value;
+            } else {
+                dice[i-1] = value==1 ? 2 : 1;
+            }
+        }
+        return new Yatzy(dice[0], dice[1], dice[2], dice[3], dice[4]);
     }
 
-    @Test
-    public void fours_test() 
-    {
-        assertEquals(12, new Yatzy(4,4,4,5,5).fours());
-        assertEquals(8, new Yatzy(4,4,5,5,5).fours());
-        assertEquals(4, new Yatzy(4,5,5,5,5).fours());
-    }
-
-    @Test
-    public void fives() {
-        assertEquals(10, new Yatzy(4,4,4,5,5).fives());
-        assertEquals(15, new Yatzy(4,4,5,5,5).fives());
-        assertEquals(20, new Yatzy(4,5,5,5,5).fives());
-    }
-
-    @Test
-    public void sixes_test() {
-        assertEquals(0, new Yatzy(4,4,4,5,5).sixes());
-        assertEquals(6, new Yatzy(4,4,6,5,5).sixes());
-        assertEquals(18, new Yatzy(6,5,6,6,5).sixes());
-    }
 
     @Test
     public void one_pair() {
