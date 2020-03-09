@@ -51,13 +51,7 @@ public class Yatzy {
      * @return
      */
     public int pair() {
-        int[] counts = getDistribution();
-        for (int i = 5; i >= 0; i--) {
-            if(counts[i]>=2) {
-                return (i+1)*2;
-            }
-        }
-        return 0;
+        return several_of_a_kind(2);
     }
 
     /**
@@ -81,6 +75,26 @@ public class Yatzy {
         }
     }
 
+    /**
+     * If there are three dice with the same number, the player scores the sum of these dice.
+     * @return
+     */
+    public int three_of_a_kind() {
+        return several_of_a_kind(3);
+    }
+
+    /**
+     * If there are four dice with the same number, the player scores the sum of these dice.
+     * @return
+     */
+    public int four_of_a_kind() {
+        return several_of_a_kind(4);
+    }
+
+    /**
+     * compte le nombre de dés de chaque face
+     * @return
+     */
     private int[] getDistribution() {
         int[] counts = new int[] {0, 0, 0, 0, 0, 0};
         for (int i = 0; i < 5; i++) {
@@ -89,35 +103,16 @@ public class Yatzy {
         return counts;
     }
 
-    public static int four_of_a_kind(int _1, int _2, int d3, int d4, int d5)
-    {
-        int[] tallies;
-        tallies = new int[6];
-        tallies[_1-1]++;
-        tallies[_2-1]++;
-        tallies[d3-1]++;
-        tallies[d4-1]++;
-        tallies[d5-1]++;
-        for (int i = 0; i < 6; i++)
-            if (tallies[i] >= 4)
-                return (i+1) * 4;
+    private int several_of_a_kind(int value) {
+        int[] counts = getDistribution();
+        for (int i = 5; i >= 0; i--) {
+            if(counts[i]>=value) {
+                return (i + 1) * value;
+            }
+        }
         return 0;
     }
 
-    public static int three_of_a_kind(int d1, int d2, int d3, int d4, int d5)
-    {
-        int[] t;
-        t = new int[6];
-        t[d1-1]++;
-        t[d2-1]++;
-        t[d3-1]++;
-        t[d4-1]++;
-        t[d5-1]++;
-        for (int i = 0; i < 6; i++)
-            if (t[i] >= 3)
-                return (i+1) * 3;
-        return 0;
-    }
 
     public static int smallStraight(int d1, int d2, int d3, int d4, int d5)
     {
