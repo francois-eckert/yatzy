@@ -20,15 +20,17 @@ public class Yatzy {
         return IntStream.of(dice).sum();
     }
 
-    public static int yatzy(int... dice)
-    {
-        int[] counts = new int[6];
-        for (int die : dice)
-            counts[die-1]++;
-        for (int i = 0; i != 6; i++)
-            if (counts[i] == 5)
-                return 50;
-        return 0;
+    /**
+     * If all dice have the same number, the player scores 50 points.
+     * @return
+     */
+    public int yatzy() {
+        for (int i = 1; i <= 4; i++) {
+            if (dice[i] != dice[0]) {
+                return 0;
+            }
+        }
+        return 50;
     }
 
 

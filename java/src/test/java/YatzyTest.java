@@ -30,12 +30,13 @@ public class YatzyTest {
         assertEquals(15, yatzy.chance());
     }
 
-    @Test public void yatzy_scores_50() {
-        int expected = 50;
-        int actual = Yatzy.yatzy(4,4,4,4,4);
-        assertEquals(expected, actual);
-        assertEquals(50, Yatzy.yatzy(6,6,6,6,6));
-        assertEquals(0, Yatzy.yatzy(6,6,6,6,3));
+    @Test
+    @DisplayName("yatzy scores 50")
+    public void yatzy_scores_50() {
+        Yatzy roll = new Yatzy(2,3,4,5,1);
+        assertEquals(0, roll.yatzy());
+        roll = new Yatzy(1,1,1,1,1);
+        assertEquals(50, roll.yatzy());
     }
 
     @ParameterizedTest
