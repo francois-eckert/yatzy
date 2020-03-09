@@ -25,7 +25,7 @@ public class Yatzy {
      * @return
      */
     public int yatzy() {
-        for (int i = 1; i <= 4; i++) {
+        for (int i = 1; i < 5; i++) {
             if (dice[i] != dice[0]) {
                 return 0;
             }
@@ -34,6 +34,11 @@ public class Yatzy {
     }
 
 
+    /**
+     * The player scores the sum of the dice that reads one, two, three, four, five or six, respectively.
+     * @param value
+     * @return
+     */
     public int sumOfTheDiceThatReads(@Min(1) @Max(6) int value) {
         return IntStream.of(dice)
             .filter(die -> die==value)
@@ -41,40 +46,47 @@ public class Yatzy {
     }
 
 
-    public static int score_pair(int d1, int d2, int d3, int d4, int d5)
-    {
-        int[] counts = new int[6];
-        counts[d1-1]++;
-        counts[d2-1]++;
-        counts[d3-1]++;
-        counts[d4-1]++;
-        counts[d5-1]++;
-        int at;
-        for (at = 0; at != 6; at++)
-            if (counts[6-at-1] >= 2)
-                return (6-at)*2;
+    /**
+     * The player scores the sum of the two highest matching dice.
+     * @return
+     */
+    public int pair() {
+        int[] counts = getDistribution();
+        for (int i = 5; i >= 0; i--) {
+            if(counts[i]>=2) {
+                return (i+1)*2;
+            }
+        }
         return 0;
     }
 
-    public static int two_pair(int d1, int d2, int d3, int d4, int d5)
-    {
-        int[] counts = new int[6];
-        counts[d1-1]++;
-        counts[d2-1]++;
-        counts[d3-1]++;
-        counts[d4-1]++;
-        counts[d5-1]++;
+    /**
+     * If there are two pairs of dice with the same number, the player scores the sum of these dice
+     *
+     * @return
+     */
+    public int two_pair() {
+        int[] counts = getDistribution();
         int n = 0;
         int score = 0;
-        for (int i = 0; i < 6; i += 1)
-            if (counts[6-i-1] >= 2) {
+        for (int i = 0; i < 6; i++)
+            if (counts[i] >= 2) {
                 n++;
-                score += (6-i);
+                score += (i+1)*2;
             }        
-        if (n == 2)
-            return score * 2;
-        else
+        if (n == 2) {
+            return score;
+        } else {
             return 0;
+        }
+    }
+
+    private int[] getDistribution() {
+        int[] counts = new int[] {0, 0, 0, 0, 0, 0};
+        for (int i = 0; i < 5; i++) {
+            counts[dice[i]-1]++;
+        }
+        return counts;
     }
 
     public static int four_of_a_kind(int _1, int _2, int d3, int d4, int d5)
