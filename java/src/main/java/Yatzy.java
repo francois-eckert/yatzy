@@ -143,42 +143,28 @@ public class Yatzy {
     }
 
 
-    public static int fullHouse(int d1, int d2, int d3, int d4, int d5)
-    {
-        int[] tallies;
-        boolean _2 = false;
-        int i;
-        int _2_at = 0;
-        boolean _3 = false;
-        int _3_at = 0;
-
-
-
-
-        tallies = new int[6];
-        tallies[d1-1] += 1;
-        tallies[d2-1] += 1;
-        tallies[d3-1] += 1;
-        tallies[d4-1] += 1;
-        tallies[d5-1] += 1;
-
-        for (i = 0; i != 6; i += 1)
-            if (tallies[i] == 2) {
-                _2 = true;
-                _2_at = i+1;
+    /**
+     * the player scores the sum of all the dice if the dice are two of a kind and three of a kind,
+     * @return
+     */
+    public int fullHouse() {
+        int[] counts = getDistribution();
+        boolean twoOfaKind = false;
+        boolean threeOfaKind = false;
+        int score = 0;
+        for (int i = 0; i < 6; i++) {
+            if (counts[i] == 2) {
+                twoOfaKind = true;
+                score += (i+1)*2;
             }
-
-        for (i = 0; i != 6; i += 1)
-            if (tallies[i] == 3) {
-                _3 = true;
-                _3_at = i+1;
+            if (counts[i] == 3) {
+                threeOfaKind = true;
+                score += (i+1)*3;
             }
-
-        if (_2 && _3)
-            return _2_at * 2 + _3_at * 3;
-        else
-            return 0;
+        }
+        return twoOfaKind & threeOfaKind ? score : 0;
     }
+
 }
 
 

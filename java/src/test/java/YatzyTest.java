@@ -161,7 +161,12 @@ public class YatzyTest {
 
     @Test
     public void fullHouse() {
-        assertEquals(18, Yatzy.fullHouse(6,2,2,2,6));
-        assertEquals(0, Yatzy.fullHouse(2,3,4,5,6));
+        Yatzy roll = new Yatzy(1,1,2,2,2);
+        assertEquals(8, roll.fullHouse());
+        roll = new Yatzy(2,2,3,3,4);
+        assertEquals(0, roll.fullHouse());
+        roll = new Yatzy(4,4,4,4,4);
+        assertEquals(0, roll.fullHouse());
     }
+
 }
