@@ -114,41 +114,34 @@ public class Yatzy {
     }
 
 
-    public static int smallStraight(int d1, int d2, int d3, int d4, int d5)
-    {
-        int[] tallies;
-        tallies = new int[6];
-        tallies[d1-1] += 1;
-        tallies[d2-1] += 1;
-        tallies[d3-1] += 1;
-        tallies[d4-1] += 1;
-        tallies[d5-1] += 1;
-        if (tallies[0] == 1 &&
-            tallies[1] == 1 &&
-            tallies[2] == 1 &&
-            tallies[3] == 1 &&
-            tallies[4] == 1)
-            return 15;
-        return 0;
+    /**
+     * the player scores 15 (the sum of all the dice) if the dice read 1,2,3,4,5
+     * @return
+     */
+    public int smallStraight() {
+        int[] counts = getDistribution();
+        for (int i = 0; i <= 4; i++) {
+            if(counts[i]!=1) {
+                return 0;
+            }
+        }
+        return 15;
     }
 
-    public static int largeStraight(int d1, int d2, int d3, int d4, int d5)
-    {
-        int[] tallies;
-        tallies = new int[6];
-        tallies[d1-1] += 1;
-        tallies[d2-1] += 1;
-        tallies[d3-1] += 1;
-        tallies[d4-1] += 1;
-        tallies[d5-1] += 1;
-        if (tallies[1] == 1 &&
-            tallies[2] == 1 &&
-            tallies[3] == 1 &&
-            tallies[4] == 1
-            && tallies[5] == 1)
-            return 20;
-        return 0;
+    /**
+     * the player scores 20 (the sum of all the dice) if the dice read 2,3,4,5,6
+     * @return
+     */
+    public int largeStraight() {
+        int[] counts = getDistribution();
+        for (int i = 1; i <= 5; i++) {
+            if(counts[i]!=1) {
+                return 0;
+            }
+        }
+        return 20;
     }
+
 
     public static int fullHouse(int d1, int d2, int d3, int d4, int d5)
     {
