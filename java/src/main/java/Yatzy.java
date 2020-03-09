@@ -162,7 +162,7 @@ public class Yatzy {
                 score += (i+1)*3;
             }
         }
-        return twoOfaKind & threeOfaKind ? score : 0;
+        return twoOfaKind && threeOfaKind ? score : 0;
     }
 
 }
