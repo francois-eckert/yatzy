@@ -45,7 +45,7 @@ public class YatzyTest {
     public void sumOfTheDiceThatReads(int value) {
         for(int count=0; count<=5; count++) {
             Yatzy yatzy = getRollWith(value, count);
-            assertEquals(value * count, yatzy.sumOfTheDiceThatReads(value));
+            assertEquals(value * count, yatzy.sumOfDiceThatReads(value));
         }
     }
 
@@ -73,7 +73,7 @@ public class YatzyTest {
     @DisplayName("sumOfTheDiceThatReads accepts a value between 1 and 6")
     public void sumOfTheDiceThatReads£_accepted_values() throws NoSuchMethodException {
         Yatzy yatzy = new Yatzy(1, 2, 3, 4, 5);
-        Method method = Yatzy.class.getMethod("sumOfTheDiceThatReads", int.class);
+        Method method = Yatzy.class.getMethod("sumOfDiceThatReads", int.class);
         assertFalse(validator.validateParameters(yatzy, method, new Object[]{ 0 }).isEmpty());
         assertTrue(validator.validateParameters(yatzy, method, new Object[]{ 1 }).isEmpty());
         assertTrue(validator.validateParameters(yatzy, method, new Object[]{ 2 }).isEmpty());
@@ -104,31 +104,31 @@ public class YatzyTest {
     @DisplayName("two pairs scores the sum of these dice")
     public void two_Pair() {
         Yatzy roll = new Yatzy(1,1,2,3,3);
-        assertEquals(8, roll.two_pair());
+        assertEquals(8, roll.twoPair());
         roll = new Yatzy(1,1,2,3,4);
-        assertEquals(0, roll.two_pair());
+        assertEquals(0, roll.twoPair());
         roll = new Yatzy(1,1,2,2,2);
-        assertEquals(6, roll.two_pair());
+        assertEquals(6, roll.twoPair());
     }
 
     @Test
     public void three_of_a_kind() {
         Yatzy roll = new Yatzy(3,3,3,4,5);
-        assertEquals(9, roll.three_of_a_kind());
+        assertEquals(9, roll.threeOfKind());
         roll = new Yatzy(3,3,4,5,6);
-        assertEquals(0, roll.three_of_a_kind());
+        assertEquals(0, roll.threeOfKind());
         roll = new Yatzy(3,3,3,3,1);
-        assertEquals(9, roll.three_of_a_kind());
+        assertEquals(9, roll.threeOfKind());
     }
 
     @Test
     public void four_of_a_knd() {
         Yatzy roll = new Yatzy(2,2,2,2,5);
-        assertEquals(8, roll.four_of_a_kind());
+        assertEquals(8, roll.fourOfKind());
         roll = new Yatzy(2,2,2,5,5);
-        assertEquals(0, roll.four_of_a_kind());
+        assertEquals(0, roll.fourOfKind());
         roll = new Yatzy(2,2,2,2,2);
-        assertEquals(8, roll.four_of_a_kind());
+        assertEquals(8, roll.fourOfKind());
     }
 
     @Test

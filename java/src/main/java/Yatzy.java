@@ -39,7 +39,7 @@ public class Yatzy {
      * @param value
      * @return
      */
-    public int sumOfTheDiceThatReads(@Min(1) @Max(6) int value) {
+    public int sumOfDiceThatReads(@Min(1) @Max(6) int value) {
         return IntStream.of(dice)
             .filter(die -> die==value)
             .sum();
@@ -51,7 +51,7 @@ public class Yatzy {
      * @return
      */
     public int pair() {
-        return several_of_a_kind(2);
+        return severalOfKind(2);
     }
 
     /**
@@ -59,7 +59,7 @@ public class Yatzy {
      *
      * @return
      */
-    public int two_pair() {
+    public int twoPair() {
         int[] counts = getDistribution();
         int n = 0;
         int score = 0;
@@ -79,16 +79,16 @@ public class Yatzy {
      * If there are three dice with the same number, the player scores the sum of these dice.
      * @return
      */
-    public int three_of_a_kind() {
-        return several_of_a_kind(3);
+    public int threeOfKind() {
+        return severalOfKind(3);
     }
 
     /**
      * If there are four dice with the same number, the player scores the sum of these dice.
      * @return
      */
-    public int four_of_a_kind() {
-        return several_of_a_kind(4);
+    public int fourOfKind() {
+        return severalOfKind(4);
     }
 
     /**
@@ -96,14 +96,14 @@ public class Yatzy {
      * @return
      */
     private int[] getDistribution() {
-        int[] counts = new int[] {0, 0, 0, 0, 0, 0};
+        int[] counts = new int[6];
         for (int i = 0; i < 5; i++) {
             counts[dice[i]-1]++;
         }
         return counts;
     }
 
-    private int several_of_a_kind(int value) {
+    private int severalOfKind(int value) {
         int[] counts = getDistribution();
         for (int i = 5; i >= 0; i--) {
             if(counts[i]>=value) {
